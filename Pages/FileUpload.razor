@@ -1,0 +1,105 @@
+@page "/upload"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text
+@using System.Text.RegularExpressions
+
+<h3>File Cleaner</h3>
+
+<div class="upload-area">
+    <InputFile OnChange="HandleFileSelected" accept=".txt" />
+    <p>Select a text file to clean</p>
+</div>
+
+@if (selectedFile != null)
+{
+    <div class="file-info">
+        <p>Selected: @selectedFile.Name</p>
+        <button class="btn btn-primary" @onclick="ProcessFile">Clean This File!</button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(result))
+{
+    <div class="result">
+        <h4>Cleaned Content:</h4>
+        <textarea rows="10" cols="80" readonly>@result</textarea>
+    </div>
+}
+
+@code {
+    private IBrowserFile? selectedFile;
+    private string result = "";
+
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+        result = ""; // Clear previous results
+    }
+
+    private async Task ProcessFile()
+    {
+        if (selectedFile != null)
+        {
+            result = await CleanFileAsync(selectedFile);
+        }
+    }
+private async Task<string> CleanFileAsync(IBrowserFile file)
+    {
+        //Read the file content
+        using var reader = new StreamReader(file.OpenReadStream());
+        string content = await reader.ReadToEndAsync();
+        string[] inputLines = content.Split('\n');
+
+        // Copy everything from the foreach loop in the console app
+        var outputLines = new StringBuilder();
+        var options = RegexOptions.IgnoreCase;
+        string wordToBeCounted = "um";
+        string pattern = $"\\b{wordToBeCounted}\\b";
+        var countOfWords = 0;
+        int previousEndTime = 0;
+
+        foreach (var line in inputLines)
+        {
+                    //find the um and count it then remove it
+                    var match = Regex.Match(line, pattern, options);
+                    if (match.Success)
+                    {
+                        countOfWords++;
+                    }
+                    var updatedLine = Regex.Replace(line, pattern, "", options);
+
+                    //investigate the switch option
+
+                    if (updatedLine.Length == 0)
+                        continue;
+
+                    if (updatedLine.Contains("-->"))
+                    // this is a time stamp line so we want to split it and store the end time of the firstr iteration
+
+                    {
+                        var myTimes = updatedLine.Split(" ");
+                        // Get the current line's start and end times
+                        int currentStartTime = (int)TimeSpan.ParseExact(myTimes[0], "hh\\:mm\\:ss\\.fff", null).TotalSeconds;
+                        int currentEndTime = (int)TimeSpan.ParseExact(myTimes[2], "hh\\:mm\\:ss\\.fff", null).TotalSeconds;
+
+                        //if this isnt the first timestamp then calculate the gap
+                        if (previousEndTime != 0)
+                        {
+                            //if the gap is greater than 1 sec then we want start a new paragraph
+                            if ((currentStartTime - previousEndTime) > .5)
+                            {
+                                outputLines.AppendLine("\n\n");
+                            }
+                        }
+                        //remember this lines endTime for the next comparison
+                        previousEndTime = currentEndTime;
+                        continue;
+                    }
+                        outputLines.Append(' ');
+                        outputLines.Append(updatedLine);
+
+                }
+
+        return outputLines.ToString();
+    }
+}
