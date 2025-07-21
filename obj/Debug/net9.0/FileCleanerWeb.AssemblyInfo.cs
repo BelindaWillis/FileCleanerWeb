@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FileCleanerWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3f0892b747b0ecf551b130b1bcc59d3de5f05d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+997a84aca352acea0cdf7af34c577829c2676f36")]
 [assembly: System.Reflection.AssemblyProductAttribute("FileCleanerWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FileCleanerWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

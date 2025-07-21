@@ -377,3 +377,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+obj/Debug/net9.0/FileCleanerWeb.AssemblyInfo.cs
+obj/Debug/net9.0/FileCleanerWeb.AssemblyInfo.cs
+obj/Debug/net9.0/FileCleanerWeb.AssemblyInfo.cs
+obj/Debug/net9.0/FileCleanerWeb.AssemblyInfoInputs.cache
+obj/Debug/net9.0/FileCleanerWeb.GeneratedMSBuildEditorConfig.editorconfig
